@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import axios from 'axios';
+import { useEffect,useState } from 'react';
 import './App.css';
+import AddComment from './components/AddComment';
+import AddPost from './components/AddPost';
+import ShowData from './components/ShowData';
 
 function App() {
+
+  const [data ,setData] = useState()
+
+ const getData =async ()=>{
+
+  let tempData = await axios.get("https://whitebord-backend.herokuapp.com/post/")
+
+  setData(tempData.data)
+
+ }
+
+
+  useEffect(()=>{
+      getData()
+  })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <AddPost getDataFun={getData}/>
+      <AddComment getDataFun={getData}/>
+      <ShowData data={data}/>
+
     </div>
   );
 }
