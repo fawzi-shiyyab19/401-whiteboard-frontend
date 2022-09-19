@@ -1,7 +1,6 @@
 import axios from "axios";
 import AddPostForm from "./AddPostForm";
-import PostCard from "./PostCard"
-
+import PostCard from "./PostCard";
 function Main({ data, dfunc , acfunc, apfunc}) {
 
 

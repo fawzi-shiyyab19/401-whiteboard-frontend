@@ -2,9 +2,14 @@ import Main from './components/Main'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import base64 from 'base-64';
+import Log from './components/Log'
 
 function App() {
+
   const [data, setData] = useState([]);
+  const [loggedin, setLoggedin] = useState(false);
+
   useEffect(() => {
     getData().then((resolve) => {
       setData(resolve);
@@ -45,8 +50,8 @@ function App() {
   async function addPost(e) {
     e.preventDefault();
     const obj = {
-      title:e.target.title.value,
-      content:e.target.contnet.value,
+      title: e.target.title.value,
+      content: e.target.contnet.value,
     }
     let url = `${process.env.REACT_APP_SERVER}/post`;
     let axiosRequest = await axios.post(url, obj);
@@ -57,9 +62,42 @@ function App() {
 
   }
 
+  async function signup(e) {
+    e.preventDefault();
+    console.log('sign UP baby');
+    let url = `${process.env.REACT_APP_SERVER}/signup`;
+    const obj = {
+      username: e.target.username.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+    }
+    await axios.post(url, obj);
+  }
+
+  function signin(e) {
+    e.preventDefault();
+    console.log('inside sigin in');
+    const obj = {
+      userN: e.target.username.value,
+      passW: e.target.password.value
+    }
+    const encodedData = base64.encode(`${obj.userN}:${obj.passW}`);
+    const url = `${process.env.REACT_APP_SERVER}/signin`;
+    axios.post(url, {}, { headers: { Authorization: `Basic ${encodedData}` } })
+      .then(resolved => {
+        console.log(resolved.data);
+        setLoggedin(true)
+      })
+      .catch(reject => { console.log(reject) });
+  };
+
+
+
+
   return (
     <>
-      <Main data={data} dfunc={deletePost} acfunc={addComment} apfunc={addPost}/>
+      {!loggedin && <Log sifunc={signin} sufunc={signup}/>}
+      {loggedin&&<Main data={data} dfunc={deletePost} acfunc={addComment} apfunc={addPost} />}
     </>
   );
 }
