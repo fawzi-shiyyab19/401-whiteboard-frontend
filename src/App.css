@@ -1,6 +1,26 @@
 .App {
   text-align: center;
   background-color:teal;
+  
+}
+.inForm{
+  background-color:  teal ;
+  width: 100% ;  
+display: flex;
+flex-direction: row;
+  height:  5rem;
+}
+.main{
+  background-color:  teal ;
+  width: 100% ;  
+
+}
+.upForm{
+  background-color:  teal ;
+  width: 100% ;  
+display: flex;
+flex-direction: row;
+  height:  5rem;
 }
 
 .App-logo {

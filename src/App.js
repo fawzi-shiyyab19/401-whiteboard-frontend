@@ -3,7 +3,10 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import base64 from 'base-64';
+import { Route,Routes } from "react-router-dom";
+
 import Log from './components/Log'
+import JS from './components/JS';
 
 function App() {
 
@@ -64,12 +67,17 @@ function App() {
 
   async function signup(e) {
     e.preventDefault();
+    if (e.target.password.value !== e.target.confirmpassword.value) {
+      alert("password is not matvh")
+      return;
+    }
     console.log('sign UP baby');
     let url = `${process.env.REACT_APP_SERVER}/signup`;
     const obj = {
       username: e.target.username.value,
       email: e.target.email.value,
       password: e.target.password.value,
+
     }
     await axios.post(url, obj);
   }
@@ -96,8 +104,26 @@ function App() {
 
   return (
     <>
-      {!loggedin && <Log sifunc={signin} sufunc={signup}/>}
-      {loggedin&&<Main data={data} dfunc={deletePost} acfunc={addComment} apfunc={addPost} />}
+
+      {/* {!loggedin && >}
+      {loggedin && 
+      <Main data={data} dfunc={deletePost} acfunc={addComment} apfunc={addPost} />} */}
+
+      <Routes>
+        {/* //Route One */}
+        
+        <Route exact path="/" element={
+          (loggedin) ?
+            <Main data={data} dfunc={deletePost} acfunc={addComment} apfunc={addPost} /> :
+            <Log sifunc={signin} sufunc={signup} />
+        }></Route>
+
+          {/* /// Route 2 */}
+        <Route exact path="/js" element={<JS /> }>
+        </Route>
+
+
+      </Routes>
     </>
   );
 }
