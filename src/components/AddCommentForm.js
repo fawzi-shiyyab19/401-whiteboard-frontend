@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import cookies from "react-cookies";
 
 function AddCommentForm({ acfunc, item }) {
 
@@ -7,10 +8,14 @@ function AddCommentForm({ acfunc, item }) {
 
   function addCooment(e) {
     e.preventDefault();
+
+    let userID = cookies.load('id')
     let comment = {
       text : e.target.comment.value,
-      textId : item.id}
-    acfunc(item.id,comment);
+      textId : item.id,
+      userId : userID,
+    }
+    acfunc(item.id,comment,userID);
     setCmn('');
   }
 
